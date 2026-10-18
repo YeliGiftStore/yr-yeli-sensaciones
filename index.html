@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YR – Yeli Sensaciones</title>
+<meta name="description" content="Tienda física y virtual Yeli Sensaciones. Regalos, moda, belleza y hogar.">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#fffaf7;color:#33272d}
+header{background:#5a2345;color:white;text-align:center;padding:26px 15px}
+header h1{margin:0;font-size:29px}
+header p{margin:9px 0 0}
+.hero{padding:28px 16px;text-align:center;background:#f4e4ec}
+.hero h2{margin:0 0 10px;color:#762c55}
+button,.btn{border:0;border-radius:22px;padding:12px 17px;background:#762c55;color:white;font-weight:bold;cursor:pointer;text-decoration:none;display:inline-block}
+main{max-width:1000px;margin:auto;padding:20px 14px}
+input,select{width:100%;padding:13px;border:1px solid #d9c7d0;border-radius:10px;background:white;font-size:16px;margin-bottom:12px}
+.categories{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 20px}
+.categories button{background:#ead6e1;color:#54223f}
+.categories button.active{background:#762c55;color:white}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:14px}
+.card{background:white;border:1px solid #efdee6;border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:9px}
+.photo{height:115px;background:#f6edf1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:45px}
+.card h3{font-size:17px;margin:0}
+.card p{font-size:13px;color:#65545d;margin:0;line-height:1.4}
+.card .btn{margin-top:auto;text-align:center;font-size:14px}
+.price{font-weight:bold;color:#762c55}
+.info{background:#f4e4ec;padding:20px;border-radius:14px;margin-top:25px;line-height:1.7}
+footer{text-align:center;background:#5a2345;color:white;padding:22px;margin-top:25px}
+.whatsapp{position:fixed;bottom:15px;right:14px;background:#168b51;color:white;border-radius:28px;padding:14px;text-decoration:none;font-weight:bold;box-shadow:0 2px 10px #999}
+</style>
+</head>
+<body>
+<header>
+<h1>YR</h1>
+<p>✨ Tienda de Regalos · Yeli Sensaciones ✨</p>
+</header>
+<section class="hero">
+<h2>Detalles que enamoran, precios para ti</h2>
+<p>Moda, belleza, hogar, accesorios y mucho más.</p>
+<a class="btn" href="#catalogo">Ver catálogo</a>
+</section>
+<main id="catalogo">
+<h2>Nuestro catálogo</h2>
+<p>Busca lo que necesitas y consulta disponibilidad por WhatsApp.</p>
+<input id="buscar" placeholder="🔎 Buscar un producto..." aria-label="Buscar productos">
+<div class="categories" id="categorias"></div>
+<div class="grid" id="productos"></div>
+<div class="info">
+<h3>📍 Visítanos</h3>
+<p>Calle Colón número 56, esquina 20 de Mayo, Vista Alegre.</p>
+<p>Horario: 9:00 a. m.–12:00 m. y 2:00–6:00 p. m.</p>
+<p>¿Tienes dudas? Escríbenos y te atenderemos personalmente.</p>
+<a class="btn" href="https://wa.me/5352060621">Contactar por WhatsApp</a>
+</div>
+</main>
+<footer>
+<p><strong>YR – Yeli Sensaciones</strong></p>
+<p>Tu tienda física y virtual ❤️</p>
+</footer>
+<a class="whatsapp" href="https://wa.me/5352060621">WhatsApp</a>
+<script>
+const articulos=[
+{n:"Ropa para mujer y hombre",c:"Moda",e:"👗"},
+{n:"Calzado",c:"Moda",e:"👟"},
+{n:"Ropa infantil",c:"Moda",e:"🧒"},
+{n:"Perfumes",c:"Belleza",e:"🌸"},
+{n:"Productos para el cabello",c:"Belleza",e:"🧴"},
+{n:"Maquillaje y accesorios",c:"Belleza",e:"💄"},
+{n:"Artículos para el hogar",c:"Hogar",e:"🏠"},
+{n:"Electrodomésticos",c:"Hogar",e:"🍳"},
+{n:"Relojes y audífonos",c:"Accesorios",e:"🎧"},
+{n:"Regalos especiales",c:"Regalos",e:"🎁"}
+];
+let categoria="Todos";
+const wa="https://wa.me/5352060621?text=";
+function mostrar(){
+const q=document.getElementById("buscar").value.toLowerCase();
+const lista=articulos.filter(a=>(categoria==="Todos"||a.c===categoria)&&a.n.toLowerCase().includes(q));
+document.getElementById("productos").innerHTML=lista.map(a=>`
+<div class="card">
+<div class="photo">${a.e}</div>
+<h3>${a.n}</h3>
+<p>Consulta modelos, precios y disponibilidad.</p>
+<a class="btn" href="${wa+encodeURIComponent("Hola, me interesa: "+a.n+". ¿Qué opciones y precios tienen disponibles?")}">Consultar precio</a>
+</div>`).join("")||"<p>No encontramos productos. Prueba otra búsqueda.</p>";
+}
+const cats=["Todos",...new Set(articulos.map(a=>a.c))];
+document.getElementById("categorias").innerHTML=cats.map(c=>`<button class="${c===categoria?"active":""}" data-cat="${c}">${c}</button>`).join("");
+document.getElementById("categorias").addEventListener("click",e=>{
+if(e.target.dataset.cat){
+categoria=e.target.dataset.cat;
+document.querySelectorAll("#categorias button").forEach(b=>b.classList.toggle("active",b.dataset.cat===categoria));
+mostrar();
+}});
+document.getElementById("buscar").addEventListener("input",mostrar);
+mostrar();
+</script>
+</body>
+</html>
